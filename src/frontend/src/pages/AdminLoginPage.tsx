@@ -14,6 +14,7 @@ export default function AdminLoginPage() {
   const {
     login,
     isLoggingIn,
+    isInitializing,
     isLoginSuccess,
     isLoginError,
     loginError,
@@ -66,6 +67,9 @@ export default function AdminLoginPage() {
     }
   }
 
+  const isButtonBusy =
+    isInitializing || isLoggingIn || (isLoginSuccess && adminLoading);
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-4"
@@ -97,13 +101,13 @@ export default function AdminLoginPage() {
             <Button
               className="w-full h-11 rounded-xl bg-primary text-primary-foreground font-semibold hover:opacity-90"
               onClick={login}
-              disabled={isLoggingIn || (isLoginSuccess && adminLoading)}
+              disabled={isButtonBusy}
               data-ocid="admin.primary_button"
             >
-              {isLoggingIn || (isLoginSuccess && adminLoading) ? (
+              {isButtonBusy ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  Signing in…
+                  {isInitializing ? "Loading…" : "Signing in…"}
                 </>
               ) : (
                 <>
